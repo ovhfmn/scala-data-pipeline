@@ -8,6 +8,8 @@ val fs2KafkaVersion   = "3.9.1"
 val circeVersion      = "0.14.12"
 val cirisVersion      = "3.11.0"
 val log4catsVersion   = "2.7.1"
+val logbackClassic = "1.5.18"
+val logbackLogstashEncoder = "8.0"
 
 lazy val root = (project in file("."))
   .settings(
@@ -34,6 +36,7 @@ lazy val root = (project in file("."))
 
       // Logging
       "org.typelevel" %% "log4cats-slf4j" % log4catsVersion,
-      "ch.qos.logback" % "logback-classic" % "1.5.18"
+      "ch.qos.logback" % "logback-classic" % logbackClassic,
+      "net.logstash.logback" % "logstash-logback-encoder" % logbackLogstashEncoder
     )
   )
