@@ -1,6 +1,6 @@
 package config
 
 final case class KafkaConfig(
-                            bootstrapServer: String,
-                            topic: String
+                              bootstrapServers: String,
+                              topic: String
                             )
