@@ -19,6 +19,7 @@ lazy val root = (project in file("."))
 
       // Cats Effect
       "org.typelevel" %% "cats-effect" % catsEffectVersion,
+      "org.typelevel" %% "cats-effect-kernel" % catsEffectVersion,
 
       // FS2
       "co.fs2" %% "fs2-core" % fs2Version,
