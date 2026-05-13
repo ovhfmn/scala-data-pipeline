@@ -6,6 +6,7 @@ import domain.AccountEventCodec._
 import fs2.Stream
 import fs2.kafka.{KafkaConsumer, KafkaProducer, ProducerRecord}
 import io.circe.parser.decode
+import storage.EventFileWriter
 
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -53,7 +54,8 @@ object EventPipeline {
 
         for {
           _ <- IO.println(s"Processing batch of ${events.size} events")
-          _ <- IO.println(events)
+          _ <- EventFileWriter.writeBatch(events)
+          _ <- IO.println(s"Wrote ${events.size} events to disk")
           _ <- offsets.last.commit
           _ <- IO.println(s"Commited batch offset")
         } yield ()

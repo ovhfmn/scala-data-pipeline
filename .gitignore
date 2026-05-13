@@ -52,6 +52,9 @@ build/
 # Log files
 *.log
 
+# Events
+*.jsonl
+
 # sbt specific
 project/target/
 project/project/
