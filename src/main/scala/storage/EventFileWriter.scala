@@ -20,7 +20,7 @@ object EventFileWriter {
     val dd = f"${now.getDayOfMonth}%02d"
     val HH = f"${now.getHour}%02d"
 
-    val path = Paths.get(s"src/data/lake/year=$yyyy/month=$MM/day=$dd/hour=$HH/events-$timestamp.jsonl")
+    val path = Paths.get(s"app/data/lake/year=$yyyy/month=$MM/day=$dd/hour=$HH/events-$timestamp.jsonl")
 
     val lines = events
       .map(_.asJson.noSpaces)
