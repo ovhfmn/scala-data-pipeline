@@ -12,7 +12,6 @@ class EventProducer(
 
   def publish(event: AccountEvent): IO[Unit] = {
 
-    import domain.AccountEventCodec._
     val record = ProducerRecord(
       topic = topic,
       key = event.accountId,

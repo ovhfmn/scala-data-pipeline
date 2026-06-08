@@ -2,7 +2,7 @@ package kafka
 
 import cats.effect.{IO, Resource}
 import config.KafkaConsumerConfig
-import fs2.kafka._
+import fs2.kafka.{KafkaProducer, ProducerSettings, KafkaConsumer, ConsumerSettings, AutoOffsetReset}
 
 object KafkaResources {
 

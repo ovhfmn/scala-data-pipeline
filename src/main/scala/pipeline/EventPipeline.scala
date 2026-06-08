@@ -2,7 +2,6 @@ package pipeline
 
 import cats.effect.IO
 import domain.AccountEvent
-import domain.AccountEventCodec._
 import fs2.Stream
 import fs2.kafka.{KafkaConsumer, KafkaProducer, ProducerRecord}
 import io.circe.parser.decode

@@ -2,7 +2,6 @@ package storage
 
 import cats.effect.IO
 import domain.AccountEvent
-import domain.AccountEventCodec.accountEventEncoder
 import io.circe.syntax.EncoderOps
 
 import java.nio.file.{Files, Paths, StandardOpenOption}
