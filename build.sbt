@@ -1,3 +1,5 @@
+import sbtassembly.AssemblyPlugin.autoImport.*
+
 ThisBuild / scalaVersion := "2.13.17"
 
 ThisBuild / version := "0.1.0-SNAPSHOT"
@@ -39,5 +41,23 @@ lazy val root = (project in file("."))
       "org.typelevel" %% "log4cats-slf4j" % log4catsVersion,
       "ch.qos.logback" % "logback-classic" % logbackClassic,
       "net.logstash.logback" % "logstash-logback-encoder" % logbackLogstashEncoder
-    )
+    ),
+
+    // Merge Strategy
+    assembly / assemblyMergeStrategy := {
+      case PathList("META-INF", "versions", xs @ _*) if xs.last.endsWith("module-info.class") => MergeStrategy.discard
+      case PathList("META-INF", "io.netty.versions.properties") => MergeStrategy.first
+      case "module-info.class" => MergeStrategy.discard
+      case "META-INF/io.netty.versions.properties" => MergeStrategy.first
+      case PathList("META-INF", "services", xs @ _*) => MergeStrategy.filterDistinctLines
+      case PathList("META-INF", "maven", xs @ _*) => MergeStrategy.discard
+      case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+      case "reference.conf" => MergeStrategy.concat
+      case "application.conf" => MergeStrategy.concat
+      case x => MergeStrategy.first
+    },
+
+    // Force explicit naming
+    assembly / assemblyJarName := "pipeline-service.jar"
+
   )
