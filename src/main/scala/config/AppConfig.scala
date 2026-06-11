@@ -1,16 +1,14 @@
 package config
 
-import cats.effect.IO
 import cats.effect.IO.{catsSyntaxTuple3Parallel, catsSyntaxTuple4Parallel}
-import cats.syntax.parallel.catsSyntaxParallelSequence_
-import ciris._
+import ciris.{ConfigValue, Effect, env}
 
-/** Immutable data configuration record capturing runtime parameter bindings for the service.
+/** Runtime configuration for the pipeline service.
  *
- * @param kafkaBroker The connection topology URI matching the targeted Kafka/Redpanda bootstrap cluster.
- * @param topic       The upstream Kafka event feed stream to listen to.
- * @param concurrency The maximum upper bound of concurrent fiber pipelines allocated to process
- * and dispatch notifications simultaneously via `mapAsync`.
+ * @param kafkaBroker Bootstrap server address for the Kafka/Redpanda cluster.
+ * @param groupId     Consumer group identifier for offset tracking.
+ * @param topic       Kafka topic to consume events from.
+ * @param concurrency Maximum number of events processed concurrently.
  */
 case class AppConfig(
                       kafkaBroker: String,
@@ -19,10 +17,8 @@ case class AppConfig(
                       concurrency: Int
                     )
 
-/** Companion object acting as a purely functional configuration loader utilizing [[ciris]].
- *
- * Reads environmental configurations explicitly from system parameters. Evaluates safely
- * in parallel using [[cats.Parallel]] syntax constructs before binding values into runtime spaces.
+/** Loads configuration from environment variables using Ciris.
+ * Falls back to defaults when variables are not set.
  */
 object AppConfig {
   def load: ConfigValue[Effect, AppConfig] = (
