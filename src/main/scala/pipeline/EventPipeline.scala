@@ -35,7 +35,8 @@ object EventPipeline {
               consumer: KafkaConsumer[IO, String, String],
               producer: KafkaProducer[IO, String, String],
               topic: String,
-              deadLetterTopic: String
+              deadLetterTopic: String,
+              instanceId: String
             ): Stream[IO, Unit] = {
     Stream.eval(consumer.subscribeTo(topic)) >> consumer
       .stream
@@ -58,12 +59,12 @@ object EventPipeline {
         }
       }
       .unNone
-      .groupWithin(100, 15.seconds)
+      .groupWithin(100, 180.seconds)
       .evalMap { chunk =>
         val (events, offsets) = chunk.toList.unzip
         for {
           _ <- IO.println(s"Processing batch of ${events.size} events")
-          _ <- EventFileWriter.writeBatch(events)
+          _ <- EventFileWriter.writeBatch(events, instanceId)
           _ <- IO.println(s"Wrote ${events.size} events to disk")
           _ <- offsets.last.commit
           _ <- IO.println(s"Committed batch offset")

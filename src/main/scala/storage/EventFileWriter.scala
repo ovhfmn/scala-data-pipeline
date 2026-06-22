@@ -30,7 +30,7 @@ object EventFileWriter {
    *
    * @param events Batch of decoded events to persist.
    */
-  def writeBatch(events: List[AccountEvent]): IO[Unit] = {
+  def writeBatch(events: List[AccountEvent], instanceId: String): IO[Unit] = {
     val timestamp = Instant.now().toEpochMilli
 
     val now = ZonedDateTime.now(ZoneOffset.UTC)
@@ -39,7 +39,7 @@ object EventFileWriter {
     val dd = f"${now.getDayOfMonth}%02d"
     val HH = f"${now.getHour}%02d"
 
-    val path = Paths.get(s"/app/data/lake/year=$yyyy/month=$MM/day=$dd/hour=$HH/events-$timestamp.jsonl")
+    val path = Paths.get(s"/app/data/lake/year=$yyyy/month=$MM/day=$dd/hour=$HH/events-$instanceId-$timestamp.jsonl")
     val lines = events
       .map(_.asJson.noSpaces)
       .mkString("\n")
